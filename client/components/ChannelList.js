@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
-
+import store from '../store'; 
 // These values are all hardcoded...for now!
 // Soon, we'll fetch them from the server!
 const RANDOM_CHANNEL = '/channels/1';
@@ -10,13 +10,33 @@ const LUNCH_CHANNEL = '/channels/4';
 
 export default class ChannelList extends Component {
 
+  constructor() {
+    super();
+    this.state = store.getState();
+  }
+
+  componentDidMount() {
+      this.unsubscribe = store.subscribe(function () {
+        this.setState(
+          store.getState()
+        );
+    });        
+  }
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+  
   render () {
+    console.log("this.state.messages", this.state.messages)     
+    const messages = this.state.messages; 
     return (
       <ul>
         <li>
           <NavLink to={RANDOM_CHANNEL} activeClassName="active">
             <span># really_random</span>
-            <span className="badge">0</span>
+            <span className="badge">
+            { messages.filter(message => message.channelId === 1).length }
+            </span>
           </NavLink>
         </li>
         <li>
