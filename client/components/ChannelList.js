@@ -27,7 +27,6 @@ export default class ChannelList extends Component {
   }
 
   render () {
-    console.log('this.state.messages', this.state)
     const messages = this.state.messages;
     return (
       <ul>
